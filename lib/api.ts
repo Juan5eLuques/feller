@@ -20,6 +20,11 @@ const api: AxiosInstance = axios.create({
   timeout: 30000, // 30 segundos
 });
 
+// Log para debugging (solo en desarrollo)
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  console.log('🔧 API URL:', process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7000/api');
+}
+
 /**
  * Interceptor REQUEST: Agregar token JWT automáticamente
  */
