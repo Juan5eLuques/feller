@@ -10,9 +10,10 @@ import type * as T from './types/api.types';
 
 /**
  * Instancia de Axios configurada con base URL y headers
+ * La URL del backend se obtiene de las variables de entorno
  */
 const api: AxiosInstance = axios.create({
-  baseURL: 'https://localhost:7000/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7000/api',
   headers: {
     'Content-Type': 'application/json',
   },
