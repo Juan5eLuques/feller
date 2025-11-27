@@ -2,240 +2,314 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
-import { Shield, Car, Calendar, Users, Plus, Edit, Trash2 } from 'lucide-react'
-import { useAuthStore } from '@/store/authStore'
-import { mockAutos, mockTurnos } from '@/lib/mockData'
-import { Auto, Turno } from '@/lib/api'
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Car,
+  Users,
+  Calendar,
+  Package,
+  ArrowUpRight,
+  Eye,
+} from 'lucide-react'
+import { dashboardAPI } from '@/lib/api'
 import toast from 'react-hot-toast'
 
+interface StatCard {
+  title: string
+  value: string
+  change: string
+  trend: 'up' | 'down'
+  icon: any
+  color: string
+}
+
 export default function AdminPage() {
-  const router = useRouter()
-  const { user, isAuthenticated } = useAuthStore()
-  const [activeTab, setActiveTab] = useState<'autos' | 'turnos' | 'usuarios'>('autos')
-  const [autos, setAutos] = useState<Auto[]>([])
-  const [turnos, setTurnos] = useState<Turno[]>([])
+  const [loading, setLoading] = useState(true)
+  const [stats, setStats] = useState<StatCard[]>([
+    {
+      title: 'Ventas del Mes',
+      value: '$125,500',
+      change: '+12.5%',
+      trend: 'up',
+      icon: DollarSign,
+      color: 'from-green-500 to-emerald-600',
+    },
+    {
+      title: 'Vehículos en Stock',
+      value: '24',
+      change: '-3',
+      trend: 'down',
+      icon: Car,
+      color: 'from-[#b71c1c] to-[#8b0000]',
+    },
+    {
+      title: 'Usuarios Activos',
+      value: '342',
+      change: '+18.2%',
+      trend: 'up',
+      icon: Users,
+      color: 'from-blue-500 to-blue-600',
+    },
+    {
+      title: 'Turnos Pendientes',
+      value: '12',
+      change: '+5',
+      trend: 'up',
+      icon: Calendar,
+      color: 'from-orange-500 to-orange-600',
+    },
+  ])
 
   useEffect(() => {
-    if (!isAuthenticated || user?.rol !== 'admin') {
-      toast.error('No tienes permisos para acceder a esta página')
-      router.push('/')
-      return
+    const fetchStats = async () => {
+      try {
+        const response = await dashboardAPI.getResumen()
+        const data = response.data
+        
+        setStats([
+          {
+            title: 'Autos Publicados',
+            value: data.autosPublicados.toString(),
+            change: '+' + data.autosPublicados,
+            trend: 'up',
+            icon: Car,
+            color: 'from-[#b71c1c] to-[#8b0000]',
+          },
+          {
+            title: 'Usuarios Registrados',
+            value: data.usuariosRegistrados.toString(),
+            change: '+' + data.usuariosRegistrados,
+            trend: 'up',
+            icon: Users,
+            color: 'from-blue-500 to-blue-600',
+          },
+          {
+            title: 'Turnos Pendientes',
+            value: data.turnosPendientes.toString(),
+            change: data.turnosPendientes.toString(),
+            trend: data.turnosPendientes > 0 ? 'up' : 'down',
+            icon: Calendar,
+            color: 'from-orange-500 to-orange-600',
+          },
+          {
+            title: 'Turnos del Día',
+            value: data.turnosDelDia.toString(),
+            change: '+' + data.turnosDelDia,
+            trend: 'up',
+            icon: Package,
+            color: 'from-green-500 to-emerald-600',
+          },
+        ])
+      } catch (error: any) {
+        console.error('Error al cargar estadísticas:', error)
+        toast.error(error.response?.data?.message || 'Error al cargar estadísticas')
+      } finally {
+        setLoading(false)
+      }
     }
 
-    // Cargar datos mock
-    setAutos(mockAutos)
-    setTurnos(mockTurnos)
-  }, [isAuthenticated, user, router])
+    fetchStats()
+    
+    // Actualizar cada 5 minutos
+    const interval = setInterval(fetchStats, 5 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [])
 
-  if (!isAuthenticated || user?.rol !== 'admin') {
-    return null
-  }
-
-  const tabs = [
-    { id: 'autos' as const, label: 'Autos', icon: Car },
-    { id: 'turnos' as const, label: 'Turnos', icon: Calendar },
-    { id: 'usuarios' as const, label: 'Usuarios', icon: Users },
+  const recentSales = [
+    {
+      id: 1,
+      vehicle: 'Toyota Corolla 2023',
+      buyer: 'Juan Pérez',
+      amount: '$28,500',
+      date: '2025-11-18',
+      status: 'completada',
+    },
+    {
+      id: 2,
+      vehicle: 'Honda Civic 2022',
+      buyer: 'María González',
+      amount: '$32,000',
+      date: '2025-11-17',
+      status: 'completada',
+    },
+    {
+      id: 3,
+      vehicle: 'Ford Ranger 2023',
+      buyer: 'Carlos Rodríguez',
+      amount: '$45,000',
+      date: '2025-11-16',
+      status: 'pendiente',
+    },
   ]
 
-  const handleDeleteAuto = (id: string) => {
-    if (confirm('¿Estás seguro de eliminar este auto?')) {
-      setAutos(autos.filter((a) => a.id !== id))
-      toast.success('Auto eliminado correctamente')
-    }
-  }
-
-  const handleDeleteTurno = (id: string) => {
-    if (confirm('¿Estás seguro de eliminar este turno?')) {
-      setTurnos(turnos.filter((t) => t.id !== id))
-      toast.success('Turno eliminado correctamente')
-    }
-  }
+  const upcomingAppointments = [
+    {
+      id: 1,
+      client: 'Ana Martínez',
+      service: 'Lavado Premium',
+      time: 'Hoy 14:00',
+      vehicle: 'BMW X5',
+    },
+    {
+      id: 2,
+      client: 'Roberto Silva',
+      service: 'Lavado Express',
+      time: 'Hoy 16:30',
+      vehicle: 'Audi A4',
+    },
+    {
+      id: 3,
+      client: 'Laura Torres',
+      service: 'Lavado Completo',
+      time: 'Mañana 10:00',
+      vehicle: 'Mercedes C200',
+    },
+  ]
 
   return (
-    <div className="min-h-screen bg-feller-black pt-28 pb-20 px-4">
-      <div className="container mx-auto max-w-7xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
-        >
-          <div className="flex items-center space-x-3 mb-2">
-            <Shield className="w-8 h-8 text-feller-red" />
-            <h1 className="text-4xl font-montserrat font-bold text-white">
-              Panel de <span className="text-feller-red">Administración</span>
-            </h1>
-          </div>
-          <p className="text-gray-400">Gestiona autos, turnos y usuarios</p>
-        </motion.div>
+    <div>
+      {/* Page Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
+        <p className="text-gray-400">Bienvenido al panel de administración de Feller Automotores</p>
+      </div>
 
-        {/* Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex space-x-2 mb-6 border-b border-feller-red/20"
-        >
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center space-x-2 px-6 py-3 font-medium transition-colors ${activeTab === tab.id
-                  ? 'text-feller-red border-b-2 border-feller-red'
-                  : 'text-gray-400 hover:text-gray-300'
-                }`}
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon
+          return (
+            <motion.div
+              key={stat.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-6 hover:border-[#b71c1c]/50 transition-colors"
             >
-              <tab.icon className="w-5 h-5" />
-              <span>{tab.label}</span>
+              <div className="flex items-center justify-between mb-4">
+                <div className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-lg flex items-center justify-center`}>
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <div className={`flex items-center space-x-1 text-sm ${stat.trend === 'up' ? 'text-green-400' : 'text-red-400'}`}>
+                  {stat.trend === 'up' ? (
+                    <TrendingUp className="w-4 h-4" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4" />
+                  )}
+                  <span>{stat.change}</span>
+                </div>
+              </div>
+              <h3 className="text-gray-400 text-sm mb-1">{stat.title}</h3>
+              <p className="text-2xl font-bold text-white">{stat.value}</p>
+            </motion.div>
+          )
+        })}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Recent Sales */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+          className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-6"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-white">Ventas Recientes</h2>
+            <button className="text-[#b71c1c] hover:text-[#8b0000] border border-transparent hover:border-[#b71c1c]/30 px-2 py-1 rounded text-sm font-medium flex items-center transition-colors">
+              Ver todas
+              <ArrowUpRight className="w-4 h-4 ml-1" />
             </button>
-          ))}
+          </div>
+          <div className="space-y-4">
+            {recentSales.map((sale) => (
+              <div
+                key={sale.id}
+                className="flex items-center justify-between p-4 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg hover:border-[#b71c1c]/30 transition-colors"
+              >
+                <div className="flex-1">
+                  <h3 className="text-white font-medium mb-1">{sale.vehicle}</h3>
+                  <p className="text-sm text-gray-400">{sale.buyer}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[#b71c1c] font-semibold mb-1">{sale.amount}</p>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      sale.status === 'completada'
+                        ? 'bg-green-600/20 text-green-400'
+                        : 'bg-yellow-600/20 text-yellow-400'
+                    }`}
+                  >
+                    {sale.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </motion.div>
 
-        {/* Content */}
+        {/* Upcoming Appointments */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.5 }}
+          className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-6"
         >
-          {/* Autos Tab */}
-          {activeTab === 'autos' && (
-            <div className="bg-feller-darkgray border border-feller-red/20 rounded-lg p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-semibold text-white">Gestión de Autos</h2>
-                <button className="flex items-center space-x-2 px-4 py-2 bg-feller-red text-white rounded-lg hover:bg-feller-darkred transition-colors">
-                  <Plus className="w-5 h-5" />
-                  <span>Agregar Auto</span>
-                </button>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-white">Próximos Turnos</h2>
+            <button className="text-[#b71c1c] hover:text-[#8b0000] border border-transparent hover:border-[#b71c1c]/30 px-2 py-1 rounded text-sm font-medium flex items-center transition-colors">
+              Ver calendario
+              <ArrowUpRight className="w-4 h-4 ml-1" />
+            </button>
+          </div>
+          <div className="space-y-4">
+            {upcomingAppointments.map((appointment) => (
+              <div
+                key={appointment.id}
+                className="flex items-center justify-between p-4 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg hover:border-[#b71c1c]/30 transition-colors"
+              >
+                <div className="flex-1">
+                  <h3 className="text-white font-medium mb-1">{appointment.client}</h3>
+                  <p className="text-sm text-gray-400">
+                    {appointment.service} • {appointment.vehicle}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[#b71c1c] font-medium">{appointment.time}</p>
+                </div>
               </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-feller-red/20 text-left">
-                      <th className="pb-3 text-gray-400 font-medium">Marca/Modelo</th>
-                      <th className="pb-3 text-gray-400 font-medium">Año</th>
-                      <th className="pb-3 text-gray-400 font-medium">Precio</th>
-                      <th className="pb-3 text-gray-400 font-medium">Estado</th>
-                      <th className="pb-3 text-gray-400 font-medium">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {autos.map((auto) => (
-                      <tr key={auto.id} className="border-b border-feller-red/10 hover:bg-feller-black/50">
-                        <td className="py-4 text-white">
-                          {auto.marca} {auto.modelo}
-                        </td>
-                        <td className="py-4 text-gray-400">{auto.año}</td>
-                        <td className="py-4 text-feller-red font-semibold">
-                          ${auto.precio.toLocaleString()}
-                        </td>
-                        <td className="py-4">
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs ${auto.estado === 'disponible'
-                                ? 'bg-green-600/20 text-green-400'
-                                : 'bg-gray-600/20 text-gray-400'
-                              }`}
-                          >
-                            {auto.estado}
-                          </span>
-                        </td>
-                        <td className="py-4">
-                          <div className="flex space-x-2">
-                            <button className="p-2 text-blue-400 hover:bg-blue-400/10 rounded transition-colors">
-                              <Edit className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteAuto(auto.id)}
-                              className="p-2 text-red-400 hover:bg-red-400/10 rounded transition-colors"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* Turnos Tab */}
-          {activeTab === 'turnos' && (
-            <div className="bg-feller-darkgray border border-feller-red/20 rounded-lg p-6">
-              <h2 className="text-2xl font-semibold text-white mb-6">Gestión de Turnos</h2>
-
-              <div className="space-y-4">
-                {turnos.map((turno) => (
-                  <div
-                    key={turno.id}
-                    className="bg-feller-black border border-feller-red/20 rounded-lg p-4 flex justify-between items-center hover:border-feller-red/50 transition-colors"
-                  >
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-4 mb-2">
-                        <h3 className="text-lg font-semibold text-white">
-                          {turno.clienteNombre}
-                        </h3>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs ${turno.estado === 'confirmado'
-                              ? 'bg-green-600/20 text-green-400'
-                              : turno.estado === 'pendiente'
-                                ? 'bg-yellow-600/20 text-yellow-400'
-                                : turno.estado === 'completado'
-                                  ? 'bg-blue-600/20 text-blue-400'
-                                  : 'bg-red-600/20 text-red-400'
-                            }`}
-                        >
-                          {turno.estado}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-400">
-                        <div>
-                          <span className="font-medium">Servicio:</span> {turno.tipoServicio}
-                        </div>
-                        <div>
-                          <span className="font-medium">Fecha:</span>{' '}
-                          {new Date(turno.fecha).toLocaleDateString('es-AR')}
-                        </div>
-                        <div>
-                          <span className="font-medium">Hora:</span> {turno.hora}
-                        </div>
-                        <div>
-                          <span className="font-medium">Vehículo:</span> {turno.vehiculo}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex space-x-2 ml-4">
-                      <button className="p-2 text-blue-400 hover:bg-blue-400/10 rounded transition-colors">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteTurno(turno.id)}
-                        className="p-2 text-red-400 hover:bg-red-400/10 rounded transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Usuarios Tab */}
-          {activeTab === 'usuarios' && (
-            <div className="bg-feller-darkgray border border-feller-red/20 rounded-lg p-6">
-              <h2 className="text-2xl font-semibold text-white mb-6">Gestión de Usuarios</h2>
-              <div className="text-center py-12">
-                <Users className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400">Funcionalidad en desarrollo</p>
-              </div>
-            </div>
-          )}
+            ))}
+          </div>
         </motion.div>
       </div>
+
+      {/* Quick Actions */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.6 }}
+        className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4"
+      >
+        <button className="p-6 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg hover:border-[#b71c1c] hover:bg-[#2a2a2a] transition-all text-left group">
+          <Car className="w-8 h-8 text-[#b71c1c] mb-3 group-hover:scale-110 transition-transform" />
+          <h3 className="text-white font-semibold mb-1">Agregar Vehículo</h3>
+          <p className="text-sm text-gray-400">Publicar nuevo auto en stock</p>
+        </button>
+
+        <button className="p-6 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg hover:border-[#b71c1c] hover:bg-[#2a2a2a] transition-all text-left group">
+          <Calendar className="w-8 h-8 text-[#b71c1c] mb-3 group-hover:scale-110 transition-transform" />
+          <h3 className="text-white font-semibold mb-1">Crear Turno</h3>
+          <p className="text-sm text-gray-400">Agendar nuevo servicio de lavado</p>
+        </button>
+
+        <button className="p-6 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg hover:border-[#b71c1c] hover:bg-[#2a2a2a] transition-all text-left group">
+          <Package className="w-8 h-8 text-[#b71c1c] mb-3 group-hover:scale-110 transition-transform" />
+          <h3 className="text-white font-semibold mb-1">Ver Inventario</h3>
+          <p className="text-sm text-gray-400">Gestionar stock y disponibilidad</p>
+        </button>
+      </motion.div>
     </div>
   )
 }

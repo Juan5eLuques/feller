@@ -21,7 +21,14 @@ Frontend moderno para **Feller Automotores** construido con Next.js 15, React 19
 - ✅ Sistema de autenticación (login/registro)
 - ✅ Módulo de turnos de lavado
 - ✅ Panel de usuario para ver turnos
-- ✅ Panel de administración (protegido por rol)
+- ✅ **Panel de administración completo (backoffice)**
+  - Dashboard con estadísticas en tiempo real
+  - Gestión de usuarios (CRUD completo)
+  - Gestión de vehículos con imágenes
+  - Control de turnos y calendario
+  - Sistema de notificaciones multicanal
+  - Módulo de ventas y comisiones
+  - Inventario y configuración
 - ✅ Responsive design completo
 - ✅ Animaciones suaves con Framer Motion
 - ✅ Páginas de error personalizadas (404)
@@ -44,14 +51,26 @@ npm start
 
 ## 🌐 Rutas
 
+### Públicas
 - `/` - Home con animación del logo
 - `/autos` - Catálogo de vehículos
 - `/lavado` - Servicio de lavado y reserva de turnos
 - `/login` - Inicio de sesión
 - `/register` - Registro de usuario
-- `/perfil` - Panel del cliente
-- `/admin` - Panel de administración (solo admin)
 - `/contacto` - Página de contacto
+
+### Protegidas (Clientes)
+- `/perfil` - Panel del cliente
+
+### Protegidas (Administradores)
+- `/admin` - Dashboard principal
+- `/admin/usuarios` - Gestión de usuarios
+- `/admin/vehiculos` - Gestión de vehículos
+- `/admin/turnos` - Gestión de turnos de lavado
+- `/admin/notificaciones` - Sistema de notificaciones
+- `/admin/ventas` - Reportes de ventas
+- `/admin/inventario` - Control de inventario (en desarrollo)
+- `/admin/configuracion` - Configuración del sistema (en desarrollo)
 
 ## 🔌 API Backend
 
@@ -85,9 +104,23 @@ frontend/
 │   ├── login/             # Inicio de sesión
 │   ├── register/          # Registro
 │   ├── perfil/            # Panel de usuario
-│   ├── admin/             # Panel de admin
+│   ├── admin/             # Panel de administración
+│   │   ├── layout.tsx     # Layout del backoffice
+│   │   ├── page.tsx       # Dashboard
+│   │   ├── usuarios/      # Gestión de usuarios
+│   │   ├── vehiculos/     # Gestión de vehículos
+│   │   ├── turnos/        # Gestión de turnos
+│   │   ├── notificaciones/ # Sistema de notificaciones
+│   │   ├── ventas/        # Reportes de ventas
+│   │   ├── inventario/    # Control de inventario
+│   │   └── configuracion/ # Configuración
 │   └── contacto/          # Contacto
 ├── components/
+│   ├── admin/             # Componentes del backoffice
+│   │   ├── AdminSidebar.tsx
+│   │   ├── AdminHeader.tsx
+│   │   ├── Modal.tsx
+│   │   └── StatCard.tsx
 │   ├── layout/            # Navbar, Footer
 │   └── ui/                # Componentes reutilizables
 ├── lib/
@@ -103,14 +136,40 @@ frontend/
 
 El sistema de autenticación utiliza JWT tokens almacenados en `localStorage` mediante Zustand. El token se adjunta automáticamente a todas las peticiones HTTP a través de interceptores de Axios.
 
+## 📚 Documentación Adicional
+
+- **[ADMIN-PANEL.md](./ADMIN-PANEL.md)** - Documentación completa del panel de administración
+- **[INTEGRACION-BACKEND.md](./INTEGRACION-BACKEND.md)** - Guía de integración con el backend
+
 ## 🚧 Próximos pasos
 
-- [ ] Conectar con la API real del backend
-- [ ] Agregar más filtros al catálogo de autos
-- [ ] Implementar sistema de favoritos
-- [ ] Agregar chat en vivo
-- [ ] Mejorar el panel de administración
+### Prioritarios
+- [ ] Conectar todas las funciones CRUD del admin con la API real
+- [ ] Implementar formularios completos con validación
+- [ ] Agregar sistema de upload de imágenes para vehículos
+- [ ] Implementar paginación en tablas del admin
+- [ ] Agregar gráficos al dashboard (Chart.js/Recharts)
+
+### Funcionalidades
+- [ ] Completar módulo de Inventario
+- [ ] Completar módulo de Configuración
+- [ ] Sistema de roles y permisos granular
+- [ ] Calendario visual para turnos
+- [ ] Exportación de reportes a PDF/Excel
+- [ ] Sistema de backup y restauración
+
+### UX/UI
+- [ ] Modales elegantes para confirmaciones
+- [ ] Drag & drop para imágenes
+- [ ] Vista previa de imágenes
+- [ ] Más filtros en catálogo de autos
+- [ ] Sistema de favoritos
+
+### Calidad
 - [ ] Agregar tests unitarios
+- [ ] Tests E2E con Playwright
+- [ ] Optimización de rendimiento
+- [ ] Documentación de API
 
 ## 📄 Licencia
 

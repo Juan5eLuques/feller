@@ -10,7 +10,7 @@ interface SplashScreenProps {
 export function SplashScreen({ onComplete }: SplashScreenProps) {
    return (
       <motion.div
-         className="fixed inset-0 z-[100] flex items-center justify-center bg-black cursor-pointer px-4"
+         className="fixed inset-0 z-100 flex items-center justify-center bg-black cursor-pointer px-4"
          onClick={onComplete}
          exit={{ opacity: 0 }}
          transition={{ duration: 0.5 }}

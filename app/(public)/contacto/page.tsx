@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-export function ContactSection() {
+export default function ContactoPage() {
    const [formData, setFormData] = useState({
       nombre: '',
       email: '',
@@ -32,12 +32,12 @@ export function ContactSection() {
    }
 
    return (
-      <section id="contact" className="py-20 bg-black">
+      <section className="min-h-screen py-32 bg-black">
          <div className="container mx-auto px-4">
             {/* Header */}
             <motion.div
                initial={{ opacity: 0, y: 20 }}
-               whileInView={{ opacity: 1, y: 0 }}
+               animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.6 }}
                viewport={{ once: true }}
                className="text-center mb-16"
@@ -55,7 +55,7 @@ export function ContactSection() {
                {/* Contact Info */}
                <motion.div
                   initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
                   viewport={{ once: true }}
                   className="space-y-8"
@@ -126,7 +126,7 @@ export function ContactSection() {
                {/* Contact Form */}
                <motion.div
                   initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                   viewport={{ once: true }}
                   className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-2xl p-6 hover:border-feller-red/40 transition-all duration-300"
@@ -196,7 +196,7 @@ export function ContactSection() {
                      <Button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-feller-red hover:bg-red-600 py-3.5 rounded-xl font-bold shadow-lg shadow-feller-red/30 hover:shadow-feller-red/50 transition-all"
+                        className="w-full bg-feller-red hover:bg-red-600 py-3.5 rounded-xl font-bold shadow-lg shadow-feller-red/30 hover:shadow-feller-red/50 transition-all cursor-pointer"
                      >
                         <Send className="w-5 h-5 mr-2" />
                         {isLoading ? 'Enviando...' : 'Enviar Mensaje'}

@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import { Montserrat, Poppins } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
-import { Navigation } from '@/components/navigation'
-import { Footer } from '@/components/footer'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -33,11 +31,9 @@ export default function RootLayout({
     <html lang="es" className="dark">
       <body className={`${montserrat.variable} ${poppins.variable} antialiased`}>
         <div className="overflow-x-hidden w-full">
-          <Navigation />
           <main className="min-h-screen">
             {children}
           </main>
-          <Footer />
         </div>
         <Toaster
           position="top-right"

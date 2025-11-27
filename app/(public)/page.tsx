@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SplashScreen } from '@/components/splash-screen'
+import { Navigation } from '@/components/navigation'
+import { Footer } from '@/components/footer'
 import { Hero } from '@/components/hero'
 import { CarsSection } from '@/components/cars-section'
 import { WashSection } from '@/components/wash-section'
@@ -33,11 +35,13 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
+            <Navigation />
             <Hero />
             <CarsSection />
             <WashSection />
             <AboutSection />
             <ContactSection />
+            <Footer />
           </motion.div>
         )}
       </AnimatePresence>
