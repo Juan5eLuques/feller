@@ -157,7 +157,7 @@ export interface Auto {
   id: number;
   marca: string;
   modelo: string;
-  año: number;
+  anio: number;
   precio: number;
   descripcion: string | null;
   disponible: boolean;
@@ -181,7 +181,7 @@ export type AutoResponse = ApiResponse<Auto>;
 export interface CreateAutoRequest {
   marca: string;
   modelo: string;
-  año: number;
+  anio: number;
   precio: number;
   descripcion?: string;
   disponible: boolean;
@@ -198,7 +198,7 @@ export type CreateAutoResponse = ApiResponse<Auto>;
 export interface UpdateAutoRequest {
   marca?: string;
   modelo?: string;
-  año?: number;
+  anio?: number;
   precio?: number;
   descripcion?: string;
   disponible?: boolean;
@@ -240,7 +240,7 @@ export interface Moto {
   id: number;
   marca: string;
   modelo: string;
-  año: number;
+  anio: number;
   precio: number;
   descripcion: string | null;
   disponible: boolean;
@@ -263,7 +263,7 @@ export type MotoResponse = ApiResponse<Moto>;
 export interface CreateMotoRequest {
   marca: string;
   modelo: string;
-  año: number;
+  anio: number;
   precio: number;
   descripcion?: string;
   disponible: boolean;
@@ -279,7 +279,7 @@ export type CreateMotoResponse = ApiResponse<Moto>;
 export interface UpdateMotoRequest {
   marca?: string;
   modelo?: string;
-  año?: number;
+  anio?: number;
   precio?: number;
   descripcion?: string;
   disponible?: boolean;

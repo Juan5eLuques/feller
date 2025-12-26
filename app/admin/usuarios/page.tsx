@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   Users,
@@ -18,30 +18,14 @@ import {
 } from 'lucide-react'
 import { usuariosAPI, Usuario } from '@/lib/api'
 import toast from 'react-hot-toast'
+import { useUsuarios } from '@/hooks/useUsuarios'
 
 export default function UsuariosPage() {
-  const [loading, setLoading] = useState(true)
+  const { usuarios, setUsuarios, loading } = useUsuarios()
   const [searchTerm, setSearchTerm] = useState('')
   const [filterRol, setFilterRol] = useState<'todos' | 'Admin' | 'Cliente'>('todos')
   const [showModal, setShowModal] = useState(false)
   const [selectedUser, setSelectedUser] = useState<Usuario | null>(null)
-  const [usuarios, setUsuarios] = useState<Usuario[]>([])
-
-  useEffect(() => {
-    fetchUsuarios()
-  }, [])
-
-  const fetchUsuarios = async () => {
-    try {
-      const response = await usuariosAPI.getAll()
-      setUsuarios(response.data)
-    } catch (error: any) {
-      console.error('Error al cargar usuarios:', error)
-      toast.error(error.response?.data?.message || 'Error al cargar usuarios')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const filteredUsuarios = usuarios.filter((usuario) => {
     const matchesSearch =
@@ -229,7 +213,7 @@ export default function UsuariosPage() {
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-[#b71c1c] to-[#8b0000] rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-linear-to-br from-[#b71c1c] to-[#8b0000] rounded-full flex items-center justify-center shrink-0">
                         <span className="text-white font-semibold text-sm">
                           {usuario.nombre.charAt(0)}
                         </span>

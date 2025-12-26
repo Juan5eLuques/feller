@@ -30,11 +30,9 @@ export default function RootLayout({
   return (
     <html lang="es" className="dark">
       <body className={`${montserrat.variable} ${poppins.variable} antialiased`}>
-        <div className="overflow-x-hidden w-full">
-          <main className="min-h-screen">
-            {children}
-          </main>
-        </div>
+        <main className="min-h-screen">
+          {children}
+        </main>
         <Toaster
           position="top-right"
           toastOptions={{

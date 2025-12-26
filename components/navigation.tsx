@@ -63,7 +63,7 @@ export function Navigation() {
                : "bg-black/50 backdrop-blur-sm border-transparent"
                }`}
          >
-            <div className="container mx-auto px-4 sm:px-6">
+            <div className="mx-auto px-6 max-w-[2000px]">
                <div className="flex items-center justify-between h-16 sm:h-20">
                   {/* Logo */}
                   <button
@@ -76,7 +76,7 @@ export function Navigation() {
                   {/* Desktop Navigation */}
                   <div className="hidden lg:flex items-center gap-6 xl:gap-8 shrink-0">
                      <button
-                        onClick={() => scrollToSection("hero")}
+                        onClick={() => router.push('/')}
                         className="text-sm font-medium text-muted-foreground hover:text-white transition-colors cursor-pointer"
                      >
                         Inicio
@@ -88,16 +88,16 @@ export function Navigation() {
                         Autos
                      </button>
                      <button
+                        onClick={() => router.push('/motos')}
+                        className="text-sm font-medium text-muted-foreground hover:text-white transition-colors cursor-pointer"
+                     >
+                        Motos
+                     </button>
+                     <button
                         onClick={() => router.push('/lavado')}
                         className="text-sm font-medium text-muted-foreground hover:text-white transition-colors cursor-pointer"
                      >
                         Lavado
-                     </button>
-                     <button
-                        onClick={() => scrollToSection("about")}
-                        className="text-sm font-medium text-muted-foreground hover:text-white transition-colors cursor-pointer"
-                     >
-                        Nosotros
                      </button>
                      <button
                         onClick={() => router.push('/contacto')}
@@ -249,7 +249,10 @@ export function Navigation() {
                      {/* Main Navigation */}
                      <nav className="flex flex-col gap-1 mb-8">
                         <motion.button
-                           onClick={() => scrollToSection("hero")}
+                           onClick={() => {
+                              setIsMobileMenuOpen(false)
+                              router.push('/')
+                           }}
                            className="text-2xl font-bold text-white hover:text-accent transition-colors text-left py-4 border-b border-border/50 cursor-pointer"
                            initial={{ opacity: 0, y: 20 }}
                            animate={{ opacity: 1, y: 0 }}
@@ -272,23 +275,26 @@ export function Navigation() {
                         <motion.button
                            onClick={() => {
                               setIsMobileMenuOpen(false)
-                              router.push('/lavado')
+                              router.push('/motos')
                            }}
                            className="text-2xl font-bold text-white hover:text-accent transition-colors text-left py-4 border-b border-border/50 cursor-pointer"
                            initial={{ opacity: 0, y: 20 }}
                            animate={{ opacity: 1, y: 0 }}
                            transition={{ delay: 0.2 }}
                         >
-                           Lavado
+                           Motos
                         </motion.button>
                         <motion.button
-                           onClick={() => scrollToSection("about")}
+                           onClick={() => {
+                              setIsMobileMenuOpen(false)
+                              router.push('/lavado')
+                           }}
                            className="text-2xl font-bold text-white hover:text-accent transition-colors text-left py-4 border-b border-border/50 cursor-pointer"
                            initial={{ opacity: 0, y: 20 }}
                            animate={{ opacity: 1, y: 0 }}
                            transition={{ delay: 0.25 }}
                         >
-                           Nosotros
+                           Lavado
                         </motion.button>
                         <motion.button
                            onClick={() => {

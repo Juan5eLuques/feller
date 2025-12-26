@@ -15,11 +15,21 @@ export default function Home() {
   const [showSplash, setShowSplash] = useState(true)
 
   useEffect(() => {
+    // Check if splash has been shown before (only on client side)
+    const hasSeenSplash = localStorage.getItem('hasSeenSplash')
+    if (hasSeenSplash) {
+      setShowSplash(false)
+    }
+  }, [])
+
+  useEffect(() => {
     // Prevent scroll when splash is showing
     if (showSplash) {
       document.body.style.overflow = "hidden"
     } else {
       document.body.style.overflow = "unset"
+      // Mark that user has seen splash
+      localStorage.setItem('hasSeenSplash', 'true')
     }
   }, [showSplash])
 

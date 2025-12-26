@@ -60,12 +60,14 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
   return (
     <header className="h-16 lg:h-20 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-40">
       {/* Menu Button - Mobile Only */}
-      <button
+      <motion.button
         onClick={onMenuClick}
-        className="lg:hidden p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-700 hover:border-zinc-600 rounded-lg transition-colors mr-2"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="lg:hidden p-2.5 text-zinc-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-feller-red/50 rounded-xl transition-all duration-200 shadow-sm hover:shadow-feller-red/20 mr-2"
       >
-        <Menu className="w-6 h-6" />
-      </button>
+        <Menu className="w-5 h-5" />
+      </motion.button>
 
       {/* Search Bar - Hidden on mobile */}
       <div className="hidden md:flex flex-1 max-w-xl">
@@ -88,15 +90,23 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
       <div className="flex items-center space-x-2 lg:space-x-4 lg:ml-6">
         {/* Notifications */}
         <div className="relative">
-          <button
+          <motion.button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="relative p-2 text-gray-400 hover:text-white hover:bg-[#2a2a2a] border border-zinc-700 hover:border-zinc-600 rounded-lg transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative p-2.5 text-zinc-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-feller-red/50 rounded-xl transition-all duration-200 shadow-sm hover:shadow-feller-red/20"
           >
-            <Bell className="w-6 h-6" />
+            <Bell className="w-5 h-5" />
             {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-2 h-2 bg-[#b71c1c] rounded-full"></span>
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -top-1 -right-1 min-w-5 h-5 px-1.5 bg-linear-to-br from-feller-red to-red-700 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-zinc-950 shadow-lg"
+              >
+                {unreadCount}
+              </motion.span>
             )}
-          </button>
+          </motion.button>
 
           <AnimatePresence>
             {showNotifications && (
@@ -106,37 +116,41 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
                   onClick={() => setShowNotifications(false)}
                 />
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 top-12 w-72 sm:w-80 bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl z-50 overflow-hidden"
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-0 top-14 w-72 sm:w-80 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl shadow-black/50 z-50 overflow-hidden backdrop-blur-sm"
                 >
-                  <div className="p-4 border-b border-zinc-800">
-                    <h3 className="text-white font-semibold">Notificaciones</h3>
-                    {unreadCount > 0 && (
-                      <p className="text-sm text-zinc-400">
-                        {unreadCount} sin leer
-                      </p>
-                    )}
+                  <div className="p-4 border-b border-zinc-800 bg-linear-to-r from-zinc-900 to-zinc-800">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-white font-bold text-base">Notificaciones</h3>
+                      {unreadCount > 0 && (
+                        <span className="px-2 py-0.5 bg-feller-red text-white text-xs font-bold rounded-full">
+                          {unreadCount}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {notifications.map((notif) => (
-                      <div
+                      <motion.div
                         key={notif.id}
-                        className={`p-4 border border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 cursor-pointer transition-colors rounded-lg m-2 ${
-                          notif.unread ? 'bg-feller-red/5 border-l-4 border-l-feller-red' : ''
+                        whileHover={{ x: 4 }}
+                        className={`p-4 border-b border-zinc-800 hover:bg-zinc-800/50 cursor-pointer transition-all duration-200 ${
+                          notif.unread ? 'bg-feller-red/5 border-l-2 border-l-feller-red' : ''
                         }`}
                       >
-                        <p className="text-white text-sm mb-1">
+                        <p className="text-white text-sm mb-1 font-medium">
                           {notif.message}
                         </p>
                         <p className="text-zinc-500 text-xs">{notif.time}</p>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
-                  <div className="p-3 border-t border-zinc-800 text-center">
-                    <button className="text-feller-red text-sm hover:text-feller-red/80 border border-transparent hover:border-feller-red/30 px-3 py-1 rounded-lg font-medium transition-colors">
-                      Ver todas
+                  <div className="p-3 border-t border-zinc-800 text-center bg-zinc-900/50">
+                    <button className="text-feller-red text-sm hover:text-white bg-feller-red/10 hover:bg-feller-red border border-feller-red/30 hover:border-feller-red px-4 py-2 rounded-lg font-semibold transition-all duration-200">
+                      Ver todas las notificaciones
                     </button>
                   </div>
                 </motion.div>
@@ -147,20 +161,22 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
 
         {/* User Menu */}
         <div className="relative">
-          <button
+          <motion.button
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center space-x-2 lg:space-x-3 p-2 hover:bg-zinc-800 border border-zinc-700 hover:border-zinc-600 rounded-lg transition-colors"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center space-x-2 lg:space-x-3 p-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-feller-red/50 rounded-xl transition-all duration-200 shadow-sm hover:shadow-feller-red/20"
           >
-            <div className="w-8 h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-feller-red to-feller-darkred rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 lg:w-9 lg:h-9 bg-linear-to-br from-feller-red via-red-600 to-feller-darkred rounded-full flex items-center justify-center ring-2 ring-zinc-800 hover:ring-feller-red/30 transition-all">
               <User className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
             </div>
             <div className="text-left hidden lg:block">
-              <p className="text-white text-sm font-medium">
+              <p className="text-white text-sm font-semibold">
                 {user?.nombre || 'Admin'}
               </p>
-              <p className="text-zinc-400 text-xs capitalize">{user?.rol}</p>
+              <p className="text-zinc-400 text-xs capitalize font-medium">{user?.rol}</p>
             </div>
-          </button>
+          </motion.button>
 
           <AnimatePresence>
             {showUserMenu && (
@@ -170,41 +186,45 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
                   onClick={() => setShowUserMenu(false)}
                 />
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 top-12 w-48 bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl z-50 overflow-hidden"
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-0 top-14 w-56 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl shadow-black/50 z-50 overflow-hidden backdrop-blur-sm"
                 >
                   <div className="p-2">
-                    <button
+                    <motion.button
                       onClick={() => {
                         router.push('/perfil')
                         setShowUserMenu(false)
                       }}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white border border-transparent hover:border-zinc-600 rounded-lg transition-colors"
+                      whileHover={{ x: 4 }}
+                      className="w-full flex items-center space-x-3 px-3 py-2.5 text-zinc-300 hover:bg-zinc-800 hover:text-white border border-transparent hover:border-zinc-700 rounded-lg transition-all duration-200"
                     >
                       <User className="w-4 h-4" />
-                      <span className="text-sm">Mi Perfil</span>
-                    </button>
-                    <button
+                      <span className="text-sm font-medium">Mi Perfil</span>
+                    </motion.button>
+                    <motion.button
                       onClick={() => {
                         router.push('/admin/configuracion')
                         setShowUserMenu(false)
                       }}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white border border-transparent hover:border-zinc-600 rounded-lg transition-colors"
+                      whileHover={{ x: 4 }}
+                      className="w-full flex items-center space-x-3 px-3 py-2.5 text-zinc-300 hover:bg-zinc-800 hover:text-white border border-transparent hover:border-zinc-700 rounded-lg transition-all duration-200"
                     >
                       <Settings className="w-4 h-4" />
-                      <span className="text-sm">Configuración</span>
-                    </button>
+                      <span className="text-sm font-medium">Configuración</span>
+                    </motion.button>
                   </div>
                   <div className="border-t border-zinc-800 p-2">
-                    <button
+                    <motion.button
                       onClick={handleLogout}
-                      className="w-full flex items-center space-x-3 px-3 py-2 text-red-400 hover:bg-red-400/10 hover:text-red-300 border border-transparent hover:border-red-400/30 rounded-lg transition-colors"
+                      whileHover={{ x: 4 }}
+                      className="w-full flex items-center space-x-3 px-3 py-2.5 text-red-400 hover:bg-red-500/10 hover:text-red-300 border border-transparent hover:border-red-500/30 rounded-lg transition-all duration-200 font-medium"
                     >
                       <LogOut className="w-4 h-4" />
                       <span className="text-sm">Cerrar Sesión</span>
-                    </button>
+                    </motion.button>
                   </div>
                 </motion.div>
               </>

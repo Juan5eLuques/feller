@@ -128,12 +128,14 @@ export default function AdminSidebar({ currentPath, isMobileMenuOpen, setIsMobil
         </Link>
         
         {/* Botón cerrar - solo visible en mobile */}
-        <button
+        <motion.button
           onClick={() => setIsMobileMenuOpen(false)}
-          className="lg:hidden p-2 text-gray-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+          whileHover={{ scale: 1.1, rotate: 90 }}
+          whileTap={{ scale: 0.9 }}
+          className="lg:hidden p-2 text-gray-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-feller-red/50 rounded-lg transition-all duration-200"
         >
           <X className="w-5 h-5" />
-        </button>
+        </motion.button>
       </div>
 
       {/* Menu Items */}
@@ -171,7 +173,7 @@ export default function AdminSidebar({ currentPath, isMobileMenuOpen, setIsMobil
                 {active && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute left-0 top-0 w-1 h-full bg-white rounded-r"
+                    className="absolute left-0 top-0 w-1 h-full bg-white rounded-r-lg"
                     initial={false}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />

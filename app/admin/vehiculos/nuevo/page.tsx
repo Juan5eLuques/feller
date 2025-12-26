@@ -31,7 +31,7 @@ export default function NuevoVehiculoPage() {
   const [autoForm, setAutoForm] = useState<Omit<CreateAutoRequest, 'disponible' | 'estado'>>({
     marca: '',
     modelo: '',
-    año: new Date().getFullYear(),
+    anio: new Date().getFullYear(),
     precio: 0,
     descripcion: '',
     puertas: 4,
@@ -44,7 +44,7 @@ export default function NuevoVehiculoPage() {
   const [motoForm, setMotoForm] = useState<Omit<CreateMotoRequest, 'disponible' | 'estado'>>({
     marca: '',
     modelo: '',
-    año: new Date().getFullYear(),
+    anio: new Date().getFullYear(),
     precio: 0,
     descripcion: '',
     cilindrada: 150,
@@ -161,21 +161,21 @@ export default function NuevoVehiculoPage() {
   }
 
   return (
-    <div >
+    <div className="px-4 sm:px-6 lg:px-8 py-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <button
             onClick={() => router.back()}
-            className="p-2 hover:bg-[#1a1a1a] rounded-lg transition-colors"
+            className="p-2 hover:bg-zinc-800 rounded-lg transition-colors shrink-0"
           >
-            <ArrowLeft className="w-6 h-6 text-white" />
+            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">
               {vehiculoCreado ? 'Agregar Imágenes' : 'Nuevo Vehículo'}
             </h1>
-            <p className="text-gray-400">
+            <p className="text-sm sm:text-base text-gray-400">
               {vehiculoCreado 
                 ? 'Sube las imágenes del vehículo creado'
                 : 'Completa los datos del vehículo'
@@ -191,24 +191,24 @@ export default function NuevoVehiculoPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
+            className="mb-6 sm:mb-8"
           >
             <label className="block text-sm font-medium text-gray-300 mb-3">
               Tipo de Vehículo
             </label>
-            <div className="grid grid-cols-2 gap-4 max-w-2xl">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 max-w-2xl">
               <button
                 onClick={() => setTipoVehiculo('auto')}
-                className={`p-6 rounded-lg border-2 transition-all ${
+                className={`p-4 sm:p-6 rounded-lg border-2 transition-all ${
                   tipoVehiculo === 'auto'
                     ? 'border-[#b71c1c] bg-[#b71c1c]/10'
-                    : 'border-[#2a2a2a] bg-[#1a1a1a] hover:border-[#3a3a3a]'
+                    : 'border-[#52525b] bg-[#1a1a1a] hover:border-[#b71c1c]/50'
                 }`}
               >
-                <Car className={`w-8 h-8 mb-3 mx-auto ${
+                <Car className={`w-6 h-6 sm:w-8 sm:h-8 mb-2 sm:mb-3 mx-auto ${
                   tipoVehiculo === 'auto' ? 'text-[#b71c1c]' : 'text-gray-400'
                 }`} />
-                <p className={`font-semibold ${
+                <p className={`font-semibold text-sm sm:text-base ${
                   tipoVehiculo === 'auto' ? 'text-white' : 'text-gray-400'
                 }`}>
                   Auto
@@ -216,16 +216,16 @@ export default function NuevoVehiculoPage() {
               </button>
               <button
                 onClick={() => setTipoVehiculo('moto')}
-                className={`p-6 rounded-lg border-2 transition-all ${
+                className={`p-4 sm:p-6 rounded-lg border-2 transition-all ${
                   tipoVehiculo === 'moto'
                     ? 'border-[#b71c1c] bg-[#b71c1c]/10'
-                    : 'border-[#2a2a2a] bg-[#1a1a1a] hover:border-[#3a3a3a]'
+                    : 'border-[#52525b] bg-[#1a1a1a] hover:border-[#b71c1c]/50'
                 }`}
               >
-                <Bike className={`w-8 h-8 mb-3 mx-auto ${
+                <Bike className={`w-6 h-6 sm:w-8 sm:h-8 mb-2 sm:mb-3 mx-auto ${
                   tipoVehiculo === 'moto' ? 'text-[#b71c1c]' : 'text-gray-400'
                 }`} />
-                <p className={`font-semibold ${
+                <p className={`font-semibold text-sm sm:text-base ${
                   tipoVehiculo === 'moto' ? 'text-white' : 'text-gray-400'
                 }`}>
                   Moto
@@ -239,13 +239,13 @@ export default function NuevoVehiculoPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-6 mb-6"
+            className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-4 sm:p-6 mb-4 sm:mb-6"
           >
-            <h2 className="text-xl font-semibold text-white mb-6">Información Básica</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">Información Básica</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Marca *
                 </label>
                 <input
@@ -258,13 +258,13 @@ export default function NuevoVehiculoPage() {
                       setMotoForm({ ...motoForm, marca: e.target.value })
                     }
                   }}
-                  className="w-full px-4 py-3 bg-black border border-[#2a2a2a] rounded-lg text-white focus:outline-none focus:border-[#b71c1c]"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-black border border-[#2a2a2a] rounded-lg text-white text-sm focus:outline-none focus:border-feller-red focus:ring-1 focus:ring-feller-red/20 transition-all"
                   placeholder="Ej: Ford, Honda, Yamaha"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Modelo *
                 </label>
                 <input
@@ -277,34 +277,34 @@ export default function NuevoVehiculoPage() {
                       setMotoForm({ ...motoForm, modelo: e.target.value })
                     }
                   }}
-                  className="w-full px-4 py-3 bg-black border border-[#2a2a2a] rounded-lg text-white focus:outline-none focus:border-[#b71c1c]"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-black border border-[#2a2a2a] rounded-lg text-white text-sm focus:outline-none focus:border-feller-red focus:ring-1 focus:ring-feller-red/20 transition-all"
                   placeholder="Ej: Focus, Civic, YBR 125"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Año *
                 </label>
                 <input
                   type="number"
-                  value={tipoVehiculo === 'auto' ? autoForm.año : motoForm.año}
+                  value={tipoVehiculo === 'auto' ? autoForm.anio : motoForm.anio}
                   onChange={(e) => {
-                    const año = parseInt(e.target.value) || new Date().getFullYear()
+                    const anio = parseInt(e.target.value) || new Date().getFullYear()
                     if (tipoVehiculo === 'auto') {
-                      setAutoForm({ ...autoForm, año })
+                      setAutoForm({ ...autoForm, anio })
                     } else {
-                      setMotoForm({ ...motoForm, año })
+                      setMotoForm({ ...motoForm, anio })
                     }
                   }}
                   min={1900}
                   max={new Date().getFullYear() + 1}
-                  className="w-full px-4 py-3 bg-black border border-[#2a2a2a] rounded-lg text-white focus:outline-none focus:border-[#b71c1c]"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-black border border-[#2a2a2a] rounded-lg text-white text-sm focus:outline-none focus:border-feller-red focus:ring-1 focus:ring-feller-red/20 transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Precio *
                 </label>
                 <input
@@ -320,56 +320,56 @@ export default function NuevoVehiculoPage() {
                   }}
                   min={0}
                   step={1000}
-                  className="w-full px-4 py-3 bg-black border border-[#2a2a2a] rounded-lg text-white focus:outline-none focus:border-[#b71c1c]"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-black border border-[#2a2a2a] rounded-lg text-white text-sm focus:outline-none focus:border-feller-red focus:ring-1 focus:ring-feller-red/20 transition-all"
                   placeholder="0.00"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Estado *
                 </label>
                 <select
                   value={estado}
                   onChange={(e) => setEstado(e.target.value as '0km' | 'Usado')}
-                  className="w-full px-4 py-3 bg-black border border-[#2a2a2a] rounded-lg text-white focus:outline-none focus:border-[#b71c1c]"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-black border border-[#2a2a2a] rounded-lg text-white text-sm focus:outline-none focus:border-feller-red focus:ring-1 focus:ring-feller-red/20 transition-all"
                 >
                   <option value="0km">0 KM</option>
                   <option value="Usado">Usado</option>
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+              <div className="sm:col-span-2 lg:col-span-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Disponibilidad
                 </label>
-                <div className="flex items-center space-x-4 pt-3">
+                <div className="flex items-center pt-2 sm:pt-3">
                   <label className="flex items-center cursor-pointer">
                     <input
                       type="checkbox"
                       checked={disponible}
                       onChange={(e) => setDisponible(e.target.checked)}
-                      className="w-5 h-5 rounded border-[#2a2a2a] bg-black text-[#b71c1c] focus:ring-[#b71c1c]"
+                      className="w-4 h-4 sm:w-5 sm:h-5 rounded border-[#2a2a2a] bg-black text-feller-red focus:ring-feller-red focus:ring-offset-0"
                     />
-                    <span className="ml-2 text-white">Disponible para venta</span>
+                    <span className="ml-2 text-white text-sm sm:text-base">Disponible para venta</span>
                   </label>
                 </div>
               </div>
 
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-300 mb-3">
+              <div className="sm:col-span-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-3">
                   Destacado
                 </label>
-                <div className="bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg p-4">
+                <div className="bg-sidebar border border-[#2a2a2a] rounded-lg p-3 sm:p-4">
                   <div className="flex items-center space-x-4 mb-4">
                     <label className="flex items-center cursor-pointer">
                       <input
                         type="checkbox"
                         checked={esDestacado}
                         onChange={(e) => setEsDestacado(e.target.checked)}
-                        className="w-5 h-5 rounded border-[#2a2a2a] bg-black text-yellow-600 focus:ring-yellow-600"
+                        className="w-4 h-4 sm:w-5 sm:h-5 rounded border-[#2a2a2a] bg-black text-yellow-600 focus:ring-yellow-600 focus:ring-offset-0"
                       />
-                      <span className="ml-2 text-white flex items-center gap-2">
+                      <span className="ml-2 text-white flex items-center gap-2 text-sm sm:text-base">
                         <Star className="w-4 h-4 text-yellow-400" />
                         Marcar como destacado
                       </span>
@@ -378,7 +378,7 @@ export default function NuevoVehiculoPage() {
                   
                   {esDestacado && (
                     <div>
-                      <label className="block text-sm text-gray-400 mb-2">
+                      <label className="block text-xs sm:text-sm text-gray-400 mb-2">
                         Orden de aparición (opcional)
                       </label>
                       <input
@@ -387,7 +387,7 @@ export default function NuevoVehiculoPage() {
                         onChange={(e) => setOrdenDestacado(e.target.value ? parseInt(e.target.value) : null)}
                         min={1}
                         placeholder="Se auto-asignará si se deja vacío"
-                        className="w-full max-w-xs px-4 py-2 bg-black border border-[#2a2a2a] rounded-lg text-white focus:outline-none focus:border-[#b71c1c]"
+                        className="w-full max-w-xs px-3 sm:px-4 py-2 text-sm bg-black border border-[#2a2a2a] rounded-lg text-white focus:outline-none focus:border-feller-red"
                       />
                       <p className="text-xs text-gray-500 mt-2">
                         Los vehículos destacados aparecen en la home. El orden determina su posición (1, 2, 3...).
@@ -397,8 +397,8 @@ export default function NuevoVehiculoPage() {
                 </div>
               </div>
 
-              <div className="md:col-span-2 lg:col-span-3">
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+              <div className="sm:col-span-2 lg:col-span-3">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Descripción
                 </label>
                 <textarea
@@ -411,7 +411,7 @@ export default function NuevoVehiculoPage() {
                     }
                   }}
                   rows={4}
-                  className="w-full px-4 py-3 bg-black border border-[#2a2a2a] rounded-lg text-white focus:outline-none focus:border-[#b71c1c] resize-none"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-black border border-[#2a2a2a] rounded-lg text-white text-sm focus:outline-none focus:border-feller-red focus:ring-1 focus:ring-feller-red/20 transition-all resize-none"
                   placeholder="Descripción detallada del vehículo..."
                 />
               </div>
@@ -425,11 +425,11 @@ export default function NuevoVehiculoPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-6"
+              className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-4 sm:p-6"
             >
-              <h2 className="text-xl font-semibold text-white mb-6">Especificaciones del Auto</h2>
+              <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">Especificaciones del Auto</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Puertas *
@@ -502,11 +502,11 @@ export default function NuevoVehiculoPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg p-6"
+              className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-4 sm:p-6"
             >
-              <h2 className="text-xl font-semibold text-white mb-6">Especificaciones de la Moto</h2>
+              <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">Especificaciones de la Moto</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Cilindrada (cc) *
@@ -563,26 +563,26 @@ export default function NuevoVehiculoPage() {
           )}
 
           {/* Botones */}
-          <div className="flex justify-end gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 mt-6 sm:mt-8">
             <button
               onClick={() => router.back()}
-              className="px-6 py-3 bg-[#1a1a1a] border border-[#2a2a2a] text-white rounded-lg hover:bg-[#2a2a2a] transition-colors"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-[#1a1a1a] border border-[#2a2a2a] text-white rounded-lg hover:bg-[#2a2a2a] transition-colors text-sm sm:text-base font-medium"
             >
               Cancelar
             </button>
             <button
               onClick={handleCreateVehiculo}
               disabled={loading}
-              className="px-6 py-3 bg-[#b71c1c] text-white rounded-lg hover:bg-[#8b0000] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-[#b71c1c] border-2 border-[#b71c1c] text-white rounded-lg hover:bg-[#8b0000] hover:border-[#8b0000] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base font-semibold shadow-lg shadow-[#b71c1c]/30"
             >
               {loading ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-t-2 border-b-2 border-white"></div>
                   Creando...
                 </>
               ) : (
                 <>
-                  <Check className="w-5 h-5" />
+                  <Check className="w-4 h-4 sm:w-5 sm:h-5" />
                   Crear Vehículo
                 </>
               )}
@@ -610,7 +610,7 @@ export default function NuevoVehiculoPage() {
             </p>
 
             <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4 flex items-start gap-3 mb-6">
-              <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
               <div>
                 <p className="text-blue-400 font-medium mb-1">Requisitos de las imágenes</p>
                 <ul className="text-sm text-gray-400 space-y-1">

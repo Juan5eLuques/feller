@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Car,
@@ -24,30 +24,14 @@ import {
 } from 'lucide-react'
 import { autosAPI, destacadosAPI, type Auto, formatearPrecio, formatearKilometraje, getEstadoBadge } from '@/lib/api'
 import toast from 'react-hot-toast'
+import { useVehiculos } from '@/hooks/useVehiculos'
 
 export default function VehiculosPage() {
   const router = useRouter()
-  const [vehiculos, setVehiculos] = useState<Auto[]>([])
-  const [loading, setLoading] = useState(true)
+  const { vehiculos, setVehiculos, loading, refresh } = useVehiculos()
   const [searchTerm, setSearchTerm] = useState('')
   const [filterEstado, setFilterEstado] = useState<'todos' | '0km' | 'Usado'>('todos')
   const [showCreateModal, setShowCreateModal] = useState(false)
-
-  useEffect(() => {
-    fetchVehiculos()
-  }, [])
-
-  const fetchVehiculos = async () => {
-    try {
-      const response = await autosAPI.getAll()
-      setVehiculos(response.data)
-    } catch (error: any) {
-      console.error('Error al cargar vehículos:', error)
-      toast.error(error.response?.data?.message || 'Error al cargar vehículos')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const filteredVehiculos = vehiculos.filter((vehiculo) => {
     const matchesSearch =
@@ -76,7 +60,7 @@ export default function VehiculosPage() {
       const response = await autosAPI.uploadImagen(autoId, file)
       toast.success('Imagen subida correctamente')
       // Actualizar el auto con la nueva imagen
-      fetchVehiculos()
+      refresh()
     } catch (error: any) {
       console.error('Error al subir imagen:', error)
       toast.error(error.response?.data?.message || 'Error al subir imagen')
@@ -95,7 +79,7 @@ export default function VehiculosPage() {
         toast.success('Vehículo marcado como destacado')
       }
       // Recargar lista
-      fetchVehiculos()
+      refresh()
     } catch (error: any) {
       console.error('Error al cambiar destacado:', error)
       toast.error(error.response?.data?.message || 'Error al cambiar estado de destacado')
@@ -116,7 +100,7 @@ export default function VehiculosPage() {
     try {
       await destacadosAPI.marcarAutoDestacado(vehiculo.id, ordenNum)
       toast.success(`Orden establecido: ${ordenNum}`)
-      fetchVehiculos()
+      refresh()
     } catch (error: any) {
       console.error('Error al establecer orden:', error)
       toast.error(error.response?.data?.message || 'Error al establecer orden')
@@ -318,7 +302,7 @@ export default function VehiculosPage() {
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="flex items-center space-x-2 text-zinc-400 text-sm">
                     <Calendar className="w-4 h-4" />
-                    <span>{vehiculo.año}</span>
+                    <span>{vehiculo.anio}</span>
                   </div>
                   <div className="flex items-center space-x-2 text-zinc-400 text-sm">
                     <Fuel className="w-4 h-4" />

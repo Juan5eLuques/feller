@@ -78,6 +78,12 @@ export default function Navbar() {
               Autos
             </button>
             <button
+              onClick={() => navigateToPage('/motos')}
+              className="text-sm font-medium text-muted-foreground hover:text-white transition-colors cursor-pointer"
+            >
+              Motos
+            </button>
+            <button
               onClick={() => navigateToPage('/lavado')}
               className="text-sm font-medium text-muted-foreground hover:text-white transition-colors cursor-pointer"
             >
@@ -193,6 +199,12 @@ export default function Navbar() {
                 className="text-sm font-medium text-muted-foreground hover:text-white transition-colors text-left cursor-pointer"
               >
                 Autos
+              </button>
+              <button
+                onClick={() => navigateToPage('/motos')}
+                className="text-sm font-medium text-muted-foreground hover:text-white transition-colors text-left cursor-pointer"
+              >
+                Motos
               </button>
               <button
                 onClick={() => navigateToPage('/lavado')}

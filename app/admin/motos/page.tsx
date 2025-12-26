@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Bike,
@@ -20,29 +20,13 @@ import {
 } from 'lucide-react'
 import { motosAPI, destacadosAPI, type Moto, formatearPrecio, formatearKilometraje, getEstadoBadge } from '@/lib/api'
 import toast from 'react-hot-toast'
+import { useMotos } from '@/hooks/useMotos'
 
 export default function MotosPage() {
   const router = useRouter()
-  const [motos, setMotos] = useState<Moto[]>([])
-  const [loading, setLoading] = useState(true)
+  const { motos, setMotos, loading, refresh } = useMotos()
   const [searchTerm, setSearchTerm] = useState('')
   const [filterEstado, setFilterEstado] = useState<'todos' | '0km' | 'Usado'>('todos')
-
-  useEffect(() => {
-    fetchMotos()
-  }, [])
-
-  const fetchMotos = async () => {
-    try {
-      const response = await motosAPI.getAll()
-      setMotos(response.data)
-    } catch (error: any) {
-      console.error('Error al cargar motos:', error)
-      toast.error(error.response?.data?.message || 'Error al cargar motos')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const filteredMotos = motos.filter((moto) => {
     const matchesSearch =
@@ -70,7 +54,7 @@ export default function MotosPage() {
     try {
       const response = await motosAPI.uploadImagen(motoId, file)
       toast.success('Imagen subida correctamente')
-      fetchMotos()
+      refresh()
     } catch (error: any) {
       console.error('Error al subir imagen:', error)
       toast.error(error.response?.data?.message || 'Error al subir imagen')
@@ -86,7 +70,7 @@ export default function MotosPage() {
         await destacadosAPI.marcarMotoDestacada(moto.id)
         toast.success('Moto marcada como destacada')
       }
-      fetchMotos()
+      refresh()
     } catch (error: any) {
       console.error('Error al cambiar destacado:', error)
       toast.error(error.response?.data?.message || 'Error al cambiar estado de destacado')
@@ -107,7 +91,7 @@ export default function MotosPage() {
     try {
       await destacadosAPI.marcarMotoDestacada(moto.id, ordenNum)
       toast.success(`Orden establecido: ${ordenNum}`)
-      fetchMotos()
+      refresh()
     } catch (error: any) {
       console.error('Error al establecer orden:', error)
       toast.error(error.response?.data?.message || 'Error al establecer orden')
@@ -309,7 +293,7 @@ export default function MotosPage() {
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="flex items-center space-x-2 text-zinc-400 text-sm">
                     <Calendar className="w-4 h-4" />
-                    <span>{moto.año}</span>
+                    <span>{moto.anio}</span>
                   </div>
                   <div className="flex items-center space-x-2 text-zinc-400 text-sm">
                     <Gauge className="w-4 h-4" />

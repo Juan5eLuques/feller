@@ -18,11 +18,10 @@ import {
 } from 'lucide-react'
 import { turnosAPI, type Turno, type TurnoEstado, formatearFecha, formatearHora } from '@/lib/api'
 import toast from 'react-hot-toast'
-import { useEffect } from 'react'
+import { useTurnos } from '@/hooks/useTurnos'
 
 export default function TurnosPage() {
-  const [turnos, setTurnos] = useState<Turno[]>([])
-  const [loading, setLoading] = useState(true)
+  const { turnos, setTurnos, loading } = useTurnos()
   const [filterEstado, setFilterEstado] = useState<
     'todos' | TurnoEstado
   >('todos')
