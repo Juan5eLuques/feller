@@ -180,7 +180,7 @@ export default function AutosPage() {
                             </select>
                           </motion.div>
                         )}
-                        <div className="h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent"></div>
+                        <div className="h-px bg-linear-to-r from-transparent via-zinc-800 to-transparent"></div>
                       </div>
 
                       {/* Modelo Filter */}
@@ -211,7 +211,7 @@ export default function AutosPage() {
                             </select>
                           </motion.div>
                         )}
-                        <div className="h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent"></div>
+                        <div className="h-px bg-linear-to-r from-transparent via-zinc-800 to-transparent"></div>
                       </div>
 
                       {/* Año Filter */}
@@ -241,7 +241,7 @@ export default function AutosPage() {
                             </select>
                           </motion.div>
                         )}
-                        <div className="h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent"></div>
+                        <div className="h-px bg-linear-to-r from-transparent via-zinc-800 to-transparent"></div>
                       </div>
 
                       {/* Price Slider */}
@@ -264,7 +264,7 @@ export default function AutosPage() {
                             <span className="text-sm font-bold text-red-600">{formatearPrecio(maxPrice)}</span>
                           </div>
                         </div>
-                        <div className="h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent"></div>
+                        <div className="h-px bg-linear-to-r from-transparent via-zinc-800 to-transparent"></div>
                       </div>
 
                       {/* Km Slider */}
@@ -287,7 +287,7 @@ export default function AutosPage() {
                             <span className="text-sm font-bold text-red-600">{formatearKilometraje(maxKm)}</span>
                           </div>
                         </div>
-                        <div className="h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent"></div>
+                        <div className="h-px bg-linear-to-r from-transparent via-zinc-800 to-transparent"></div>
                       </div>
 
                       {/* Reset Button */}

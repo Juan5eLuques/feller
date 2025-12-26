@@ -189,7 +189,7 @@ export default function MotosPage() {
                             </select>
                           </motion.div>
                         )}
-                        <div className="h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent"></div>
+                        <div className="h-px bg-linear-to-r from-transparent via-zinc-800 to-transparent"></div>
                       </div>
 
                       {/* Año Filter */}
@@ -242,7 +242,7 @@ export default function MotosPage() {
                             <span className="text-sm font-bold text-red-600">{formatearPrecio(maxPrice)}</span>
                           </div>
                         </div>
-                        <div className="h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent"></div>
+                        <div className="h-px bg-linear-to-r from-transparent via-zinc-800 to-transparent"></div>
                       </div>
 
                       {/* Km Slider */}

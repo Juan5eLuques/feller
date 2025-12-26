@@ -96,7 +96,7 @@ export function CarsSection() {
                   <h3 className="text-xl font-bold text-white mb-1 tracking-tight group-hover:text-feller-red transition-colors">
                      {vehiculo.marca} {vehiculo.modelo}
                   </h3>
-                  <p className="text-gray-500 text-sm font-medium">{vehiculo.año}</p>
+                  <p className="text-gray-500 text-sm font-medium">{vehiculo.anio}</p>
                </div>
 
                {/* Specs */}
