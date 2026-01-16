@@ -50,6 +50,7 @@ export default function MotosPage() {
   const [selectedYear, setSelectedYear] = useState<string>('all')
   const [maxPrice, setMaxPrice] = useState<number>(100000000)
   const [maxKm, setMaxKm] = useState<number>(500000)
+  const [showMobileFilters, setShowMobileFilters] = useState(false)
 
   useEffect(() => {
     fetchMotos()
@@ -108,7 +109,138 @@ export default function MotosPage() {
       
       {/* Main Content */}
       <section className="pt-24 pb-12 bg-black min-h-screen">
-        <div className="mx-auto px-6 max-w-[2000px]">
+        <div className="mx-auto px-4 sm:px-6 max-w-[2000px]">
+          
+          {/* Mobile Filters Panel */}
+          <div className="lg:hidden mb-6">
+            {/* Mobile Filter Toggle Button */}
+            <button
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-zinc-900/50 border border-zinc-800/50 rounded-xl text-white"
+            >
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-5 h-5 text-red-600" />
+                <span className="font-medium">Filtros</span>
+                {(selectedBrand !== 'all' || selectedType !== 'all' || selectedYear !== 'all') && (
+                  <span className="px-2 py-0.5 bg-red-600 text-white text-xs rounded-full">Activos</span>
+                )}
+              </div>
+              <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${showMobileFilters ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {/* Mobile Filters Content */}
+            <AnimatePresence>
+              {showMobileFilters && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="bg-zinc-900/30 border border-zinc-800/30 border-t-0 rounded-b-xl p-4 space-y-4">
+                    {/* Filter Grid for Mobile */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Marca */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-400 uppercase mb-1.5">Marca</label>
+                        <select
+                          value={selectedBrand}
+                          onChange={(e) => setSelectedBrand(e.target.value)}
+                          className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-sm text-white focus:outline-none focus:border-red-600"
+                        >
+                          <option value="all">Todas</option>
+                          {brands.filter(b => b !== 'all').map((brand) => (
+                            <option key={brand} value={brand}>{brand}</option>
+                          ))}
+                        </select>
+                      </div>
+                      
+                      {/* Tipo */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-400 uppercase mb-1.5">Tipo</label>
+                        <select
+                          value={selectedType}
+                          onChange={(e) => setSelectedType(e.target.value)}
+                          className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-sm text-white focus:outline-none focus:border-red-600"
+                        >
+                          <option value="all">Todos</option>
+                          {types.filter(t => t !== 'all').map((type) => (
+                            <option key={type} value={type}>{type}</option>
+                          ))}
+                        </select>
+                      </div>
+                      
+                      {/* Año */}
+                      <div className="col-span-2">
+                        <label className="block text-xs font-semibold text-gray-400 uppercase mb-1.5">Año</label>
+                        <select
+                          value={selectedYear}
+                          onChange={(e) => setSelectedYear(e.target.value)}
+                          className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-sm text-white focus:outline-none focus:border-red-600"
+                        >
+                          <option value="all">Todos</option>
+                          {years.filter(y => y !== 'all').map((year) => (
+                            <option key={year} value={year}>{year}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    
+                    {/* Sliders */}
+                    <div className="space-y-4">
+                      {/* Precio */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-xs font-semibold text-gray-400 uppercase">Precio máx.</label>
+                          <span className="text-sm font-bold text-red-600">{formatearPrecio(maxPrice)}</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max="50000000"
+                          step="500000"
+                          value={maxPrice}
+                          onChange={(e) => setMaxPrice(Number(e.target.value))}
+                          className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-600"
+                        />
+                      </div>
+                      
+                      {/* Kilómetros */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-xs font-semibold text-gray-400 uppercase">Km máx.</label>
+                          <span className="text-sm font-bold text-red-600">{formatearKilometraje(maxKm)}</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max="200000"
+                          step="5000"
+                          value={maxKm}
+                          onChange={(e) => setMaxKm(Number(e.target.value))}
+                          className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-600"
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Reset Button */}
+                    <Button
+                      onClick={() => {
+                        resetFilters()
+                        setShowMobileFilters(false)
+                      }}
+                      variant="outline"
+                      className="w-full bg-zinc-800/50 hover:bg-red-600/10 border-zinc-700 hover:border-red-600 text-white hover:text-red-600"
+                    >
+                      Limpiar Filtros
+                    </Button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          
           <div className="flex items-start gap-6">
             
             {showFilters && (
@@ -284,19 +416,19 @@ export default function MotosPage() {
             )}
 
             {/* Main Content */}
-            <div className="flex-1 bg-zinc-950/30 backdrop-blur-sm border border-zinc-800/30 rounded-3xl shadow-2xl p-8">
+            <div className="flex-1 bg-zinc-950/30 backdrop-blur-sm border border-zinc-800/30 rounded-2xl lg:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8">
               {/* Integrated Header */}
-              <div className="mb-8">
-                <div className="flex items-center justify-between mb-6">
+              <div className="mb-6 lg:mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 lg:mb-6">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-red-600/10 rounded-xl border border-red-600/20">
-                      <Bike className="w-6 h-6 text-red-600" />
+                      <Bike className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
                     </div>
-                    <h1 className="text-3xl md:text-4xl font-bold">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
                       <span className="text-red-600">Motos</span> <span className="text-white">Disponibles</span>
                     </h1>
                   </div>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-400 ml-11 sm:ml-0">
                     {loading ? (
                       <span>Cargando...</span>
                     ) : (
@@ -344,10 +476,10 @@ export default function MotosPage() {
                   </Button>
                 </motion.div>
               ) : (
-                <div className={`grid gap-6 ${
+                <div className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 ${
                   showFilters 
-                    ? 'md:grid-cols-2 xl:grid-cols-3' 
-                    : 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+                    ? 'lg:grid-cols-2 xl:grid-cols-3' 
+                    : 'lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                 }`}>
                   {filteredMotos.map((moto, index) => (
                     <motion.div
@@ -359,7 +491,7 @@ export default function MotosPage() {
                       className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-2xl overflow-hidden hover:border-feller-red/60 hover:shadow-xl hover:shadow-feller-red/10 transition-all duration-300 group cursor-pointer"
                     >
                       {/* Image */}
-                      <div className="relative h-56 bg-zinc-900 overflow-hidden">
+                      <div className="relative h-44 sm:h-56 bg-zinc-900 overflow-hidden">
                         {moto.imagenes && moto.imagenes.length > 0 ? (
                           <img 
                             src={moto.imagenes[0]}
@@ -386,16 +518,16 @@ export default function MotosPage() {
                       </div>
 
                       {/* Content */}
-                      <div className="p-5">
-                        <div className="mb-4">
-                          <h3 className="text-xl font-bold text-white mb-1 tracking-tight group-hover:text-feller-red transition-colors">
+                      <div className="p-4 sm:p-5">
+                        <div className="mb-3 sm:mb-4">
+                          <h3 className="text-lg sm:text-xl font-bold text-white mb-1 tracking-tight group-hover:text-feller-red transition-colors line-clamp-1">
                             {moto.marca} {moto.modelo}
                           </h3>
                           <p className="text-gray-500 text-sm font-medium">{moto.año}</p>
                         </div>
 
                         {/* Specs */}
-                        <div className="space-y-2.5 mb-5">
+                        <div className="space-y-2 sm:space-y-2.5 mb-4 sm:mb-5">
                           <div className="flex items-center text-sm text-gray-400 bg-zinc-800/30 rounded-lg px-3 py-2">
                             <Gauge className="w-4 h-4 mr-2 text-feller-red shrink-0" />
                             <span className="font-medium">{moto.cilindrada} cc</span>
@@ -403,16 +535,16 @@ export default function MotosPage() {
                         </div>
 
                         {/* Price */}
-                        <div className="flex items-end justify-between pt-4 border-t border-zinc-800">
+                        <div className="flex items-end justify-between pt-3 sm:pt-4 border-t border-zinc-800">
                           <div>
                             <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Precio</p>
-                            <p className="text-2xl font-black text-feller-red tracking-tight">
+                            <p className="text-xl sm:text-2xl font-black text-feller-red tracking-tight">
                               {formatearPrecio(moto.precio)}
                             </p>
                           </div>
                           <Button 
                             size="sm" 
-                            className="px-5 py-2.5 bg-feller-red text-white text-sm font-bold rounded-xl hover:bg-red-600 transition-all shadow-lg shadow-feller-red/30 hover:shadow-feller-red/50"
+                            className="px-3 sm:px-5 py-2 sm:py-2.5 bg-feller-red text-white text-xs sm:text-sm font-bold rounded-lg sm:rounded-xl hover:bg-red-600 transition-all shadow-lg shadow-feller-red/30 hover:shadow-feller-red/50"
                           >
                             Ver más
                           </Button>

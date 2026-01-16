@@ -112,13 +112,166 @@ export default function AutosPage() {
     }
   }
 
+  // Estado para filtros móviles
+  const [showMobileFilters, setShowMobileFilters] = useState(false)
+
   return (
     <div className="min-h-screen bg-black text-white">
       <Navigation />
       
       {/* Main Content */}
       <section className="pt-24 pb-12 bg-black min-h-screen">
-        <div className="mx-auto px-6 max-w-[2000px]">
+        <div className="mx-auto px-4 sm:px-6 max-w-[2000px]">
+          
+          {/* Mobile Filters Panel */}
+          <div className="lg:hidden mb-6">
+            {/* Mobile Filter Toggle Button */}
+            <button
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-zinc-900/50 border border-zinc-800/50 rounded-xl text-white"
+            >
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-5 h-5 text-red-600" />
+                <span className="font-medium">Filtros</span>
+                {(selectedBrand !== 'all' || selectedModel !== 'all' || selectedYear !== 'all' || selectedType !== 'all') && (
+                  <span className="px-2 py-0.5 bg-red-600 text-white text-xs rounded-full">Activos</span>
+                )}
+              </div>
+              <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${showMobileFilters ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {/* Mobile Filters Content */}
+            <AnimatePresence>
+              {showMobileFilters && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="bg-zinc-900/30 border border-zinc-800/30 border-t-0 rounded-b-xl p-4 space-y-4">
+                    {/* Filter Grid for Mobile */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Marca */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-400 uppercase mb-1.5">Marca</label>
+                        <select
+                          value={selectedBrand}
+                          onChange={(e) => {
+                            setSelectedBrand(e.target.value)
+                            setSelectedModel('all')
+                          }}
+                          className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-sm text-white focus:outline-none focus:border-red-600"
+                        >
+                          <option value="all">Todas</option>
+                          {brands.filter(b => b !== 'all').map((brand) => (
+                            <option key={brand} value={brand}>{brand}</option>
+                          ))}
+                        </select>
+                      </div>
+                      
+                      {/* Modelo */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-400 uppercase mb-1.5">Modelo</label>
+                        <select
+                          value={selectedModel}
+                          onChange={(e) => setSelectedModel(e.target.value)}
+                          className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-sm text-white focus:outline-none focus:border-red-600 disabled:opacity-50"
+                          disabled={selectedBrand === 'all'}
+                        >
+                          <option value="all">Todos</option>
+                          {models.filter(m => m !== 'all').map((model) => (
+                            <option key={model} value={model}>{model}</option>
+                          ))}
+                        </select>
+                      </div>
+                      
+                      {/* Año */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-400 uppercase mb-1.5">Año</label>
+                        <select
+                          value={selectedYear}
+                          onChange={(e) => setSelectedYear(e.target.value)}
+                          className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-sm text-white focus:outline-none focus:border-red-600"
+                        >
+                          <option value="all">Todos</option>
+                          {years.filter(y => y !== 'all').map((year) => (
+                            <option key={year} value={year}>{year}</option>
+                          ))}
+                        </select>
+                      </div>
+                      
+                      {/* Estado */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-400 uppercase mb-1.5">Estado</label>
+                        <select
+                          value={selectedType}
+                          onChange={(e) => setSelectedType(e.target.value)}
+                          className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-sm text-white focus:outline-none focus:border-red-600"
+                        >
+                          <option value="all">Todos</option>
+                          {types.filter(t => t !== 'all').map((type) => (
+                            <option key={type} value={type}>{type}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    
+                    {/* Sliders */}
+                    <div className="space-y-4">
+                      {/* Precio */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-xs font-semibold text-gray-400 uppercase">Precio máx.</label>
+                          <span className="text-sm font-bold text-red-600">{formatearPrecio(maxPrice)}</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100000000"
+                          step="1000000"
+                          value={maxPrice}
+                          onChange={(e) => setMaxPrice(Number(e.target.value))}
+                          className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-600"
+                        />
+                      </div>
+                      
+                      {/* Kilómetros */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-xs font-semibold text-gray-400 uppercase">Km máx.</label>
+                          <span className="text-sm font-bold text-red-600">{formatearKilometraje(maxKm)}</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max="500000"
+                          step="10000"
+                          value={maxKm}
+                          onChange={(e) => setMaxKm(Number(e.target.value))}
+                          className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-600"
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Reset Button */}
+                    <Button
+                      onClick={() => {
+                        resetFilters()
+                        setShowMobileFilters(false)
+                      }}
+                      variant="outline"
+                      className="w-full bg-zinc-800/50 hover:bg-red-600/10 border-zinc-700 hover:border-red-600 text-white hover:text-red-600"
+                    >
+                      Limpiar Filtros
+                    </Button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          
           <div className="flex items-start gap-6">
             
             {/* Sidebar Sticky Container */}
@@ -306,19 +459,19 @@ export default function AutosPage() {
             </AnimatePresence>
 
             {/* Main Content */}
-            <div className="flex-1 bg-zinc-950/30 backdrop-blur-sm border border-zinc-800/30 rounded-3xl shadow-2xl p-8">
+            <div className="flex-1 bg-zinc-950/30 backdrop-blur-sm border border-zinc-800/30 rounded-2xl lg:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8">
               {/* Integrated Header */}
-              <div className="mb-8">
-                <div className="flex items-center justify-between mb-6">
+              <div className="mb-6 lg:mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 lg:mb-6">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-red-600/10 rounded-xl border border-red-600/20">
-                      <Car className="w-6 h-6 text-red-600" />
+                      <Car className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
                     </div>
-                    <h1 className="text-3xl md:text-4xl font-bold">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
                       <span className="text-red-600">Autos</span> <span className="text-white">Disponibles</span>
                     </h1>
                   </div>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-400 ml-11 sm:ml-0">
                     {loading ? (
                       <span>Cargando...</span>
                     ) : (
@@ -366,10 +519,10 @@ export default function AutosPage() {
                   </Button>
                 </motion.div>
               ) : (
-                <div className={`grid gap-6 ${
+                <div className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 ${
                   showFilters 
-                    ? 'md:grid-cols-2 xl:grid-cols-3' 
-                    : 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+                    ? 'lg:grid-cols-2 xl:grid-cols-3' 
+                    : 'lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                 }`}>
                   {filteredAutos.map((auto, index) => (
                     <motion.div
@@ -382,7 +535,7 @@ export default function AutosPage() {
                       onClick={() => handleAutoClick(auto)}
                     >
                       {/* Image */}
-                      <div className="relative h-56 bg-zinc-900 overflow-hidden">
+                      <div className="relative h-44 sm:h-56 bg-zinc-900 overflow-hidden">
                         {auto.imagenes && auto.imagenes.length > 0 ? (
                           <img 
                             src={auto.imagenes[0].url} 
@@ -409,16 +562,16 @@ export default function AutosPage() {
                       </div>
 
                       {/* Content */}
-                      <div className="p-5">
-                        <div className="mb-4">
-                          <h3 className="text-xl font-bold text-white mb-1 tracking-tight group-hover:text-feller-red transition-colors">
+                      <div className="p-4 sm:p-5">
+                        <div className="mb-3 sm:mb-4">
+                          <h3 className="text-lg sm:text-xl font-bold text-white mb-1 tracking-tight group-hover:text-feller-red transition-colors line-clamp-1">
                             {auto.marca} {auto.modelo}
                           </h3>
                           <p className="text-gray-500 text-sm font-medium">{auto.anio}</p>
                         </div>
 
                         {/* Specs */}
-                        <div className="space-y-2.5 mb-5">
+                        <div className="space-y-2 sm:space-y-2.5 mb-4 sm:mb-5">
                           {auto.kilometraje !== null && (
                             <div className="flex items-center text-sm text-gray-400 bg-zinc-800/30 rounded-lg px-3 py-2">
                               <Gauge className="w-4 h-4 mr-2 text-feller-red shrink-0" />
@@ -436,16 +589,16 @@ export default function AutosPage() {
                         </div>
 
                         {/* Price */}
-                        <div className="flex items-end justify-between pt-4 border-t border-zinc-800">
+                        <div className="flex items-end justify-between pt-3 sm:pt-4 border-t border-zinc-800">
                           <div>
                             <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Precio</p>
-                            <p className="text-2xl font-black text-feller-red tracking-tight">
+                            <p className="text-xl sm:text-2xl font-black text-feller-red tracking-tight">
                               {formatearPrecio(auto.precio)}
                             </p>
                           </div>
                           <Button 
                             size="sm" 
-                            className="px-5 py-2.5 bg-feller-red text-white text-sm font-bold rounded-xl hover:bg-red-600 transition-all shadow-lg shadow-feller-red/30 hover:shadow-feller-red/50"
+                            className="px-3 sm:px-5 py-2 sm:py-2.5 bg-feller-red text-white text-xs sm:text-sm font-bold rounded-lg sm:rounded-xl hover:bg-red-600 transition-all shadow-lg shadow-feller-red/30 hover:shadow-feller-red/50"
                           >
                             Ver más
                           </Button>
@@ -468,7 +621,7 @@ export default function AutosPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+              className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/90 backdrop-blur-sm"
               onClick={handleCloseModal}
             >
               <motion.div
@@ -476,19 +629,19 @@ export default function AutosPage() {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative bg-zinc-900/95 border border-white/10 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+                className="relative bg-zinc-900/95 border border-white/10 rounded-xl sm:rounded-2xl max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl"
               >
                 {/* Header */}
-                <div className="sticky top-0 z-10 flex items-center justify-between px-8 py-6 bg-zinc-900/98 backdrop-blur-md border-b border-white/10">
-                  <div>
-                    <h2 className="text-3xl font-bold text-white">
+                <div className="sticky top-0 z-30 flex items-start sm:items-center justify-between px-4 sm:px-8 py-4 sm:py-6 bg-zinc-900 border-b border-white/10">
+                  <div className="flex-1 min-w-0 pr-3">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white truncate">
                       {selectedAuto.marca} <span className="text-accent">{selectedAuto.modelo}</span>
                     </h2>
-                    <div className="flex items-center gap-3 mt-2">
-                      <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-400 font-medium">
+                    <div className="flex items-center gap-2 sm:gap-3 mt-2 flex-wrap">
+                      <span className="px-2 sm:px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-400 font-medium">
                         {selectedAuto.anio}
                       </span>
-                      <span className={`px-3 py-1 border rounded-full text-xs font-medium ${
+                      <span className={`px-2 sm:px-3 py-1 border rounded-full text-xs font-medium ${
                         selectedAuto.estado === '0km'
                           ? 'bg-green-500/10 border-green-500/30 text-green-400'
                           : 'bg-blue-500/10 border-blue-500/30 text-blue-400'
@@ -500,20 +653,20 @@ export default function AutosPage() {
                   
                   <button
                     onClick={handleCloseModal}
-                    className="p-2.5 bg-white/5 hover:bg-accent/20 border border-white/10 hover:border-accent rounded-xl text-white transition-all duration-300 group"
+                    className="p-2 sm:p-2.5 bg-white/5 hover:bg-accent/20 border border-white/10 hover:border-accent rounded-lg sm:rounded-xl text-white transition-all duration-300 group shrink-0"
                   >
                     <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                   </button>
                 </div>
 
                 {/* Content */}
-                <div className="p-8">
-                  <div className="grid md:grid-cols-2 gap-8">
+                <div className="p-4 sm:p-6 md:p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     {/* Image Gallery */}
                     <div className="relative">
                       <div 
                         onClick={() => selectedAuto.imagenes && selectedAuto.imagenes.length > 0 && setImageExpanded(true)}
-                        className="relative h-96 bg-linear-to-br from-white/5 to-white/0 rounded-xl overflow-hidden border border-white/10 cursor-pointer group"
+                        className="relative h-56 sm:h-72 md:h-96 bg-linear-to-br from-white/5 to-white/0 rounded-xl overflow-hidden border border-white/10 cursor-pointer group"
                       >
                       {selectedAuto.imagenes && selectedAuto.imagenes.length > 0 ? (
                         <>
@@ -541,22 +694,22 @@ export default function AutosPage() {
                                   e.stopPropagation()
                                   handlePrevImage()
                                 }}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 hover:bg-feller-red/90 border border-white/20 hover:border-feller-red rounded-xl text-white transition-all duration-300 backdrop-blur-md group z-10"
+                                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-black/30 hover:bg-feller-red/90 border border-white/20 hover:border-feller-red rounded-lg sm:rounded-xl text-white transition-all duration-300 backdrop-blur-md group z-10"
                               >
-                                <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+                                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-x-0.5 transition-transform" />
                               </button>
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   handleNextImage()
                                 }}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/30 hover:bg-feller-red/90 border border-white/20 hover:border-feller-red rounded-xl text-white transition-all duration-300 backdrop-blur-md group z-10"
+                                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-black/30 hover:bg-feller-red/90 border border-white/20 hover:border-feller-red rounded-lg sm:rounded-xl text-white transition-all duration-300 backdrop-blur-md group z-10"
                               >
-                                <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+                                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-0.5 transition-transform" />
                               </button>
 
                               {/* Indicadores */}
-                              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/30 backdrop-blur-md px-3 py-2 rounded-full border border-white/10 z-10">
+                              <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2 bg-black/30 backdrop-blur-md px-2 sm:px-3 py-1.5 sm:py-2 rounded-full border border-white/10 z-10">
                                 {selectedAuto.imagenes.map((_, idx) => (
                                   <button
                                     key={idx}
@@ -591,12 +744,12 @@ export default function AutosPage() {
 
                       {/* Thumbnails */}
                       {selectedAuto.imagenes && selectedAuto.imagenes.length > 1 && (
-                        <div className="grid grid-cols-6 gap-2 mt-4">
-                          {selectedAuto.imagenes.map((img, idx) => (
+                        <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5 sm:gap-2 mt-3 sm:mt-4">
+                          {selectedAuto.imagenes.slice(0, 6).map((img, idx) => (
                             <button
                               key={idx}
                               onClick={() => setCurrentImageIndex(idx)}
-                              className={`relative h-14 rounded-lg overflow-hidden border transition-all duration-300 ${
+                              className={`relative h-12 sm:h-14 rounded-lg overflow-hidden border transition-all duration-300 ${
                                 idx === currentImageIndex
                                   ? 'border-accent ring-2 ring-accent/30 scale-105'
                                   : 'border-white/10 hover:border-accent/50 hover:scale-105'
@@ -616,69 +769,69 @@ export default function AutosPage() {
                     {/* Details */}
                     <div className="flex flex-col">
                       {/* Price */}
-                      <div className="relative bg-white/5 rounded-xl p-5 mb-6 border border-white/10 overflow-hidden group hover:border-accent/40 transition-all duration-300">
+                      <div className="relative bg-white/5 rounded-xl p-4 sm:p-5 mb-4 sm:mb-6 border border-white/10 overflow-hidden group hover:border-accent/40 transition-all duration-300">
                         <div className="absolute inset-0 bg-linear-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <p className="text-xs text-gray-400 mb-1 uppercase tracking-wider font-medium relative z-10">Precio</p>
-                        <p className="text-5xl font-black text-accent relative z-10">
+                        <p className="text-3xl sm:text-4xl md:text-5xl font-black text-accent relative z-10">
                           {formatearPrecio(selectedAuto.precio)}
                         </p>
                       </div>
 
                       {/* Specifications */}
-                      <div className="mb-6">
-                        <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                          <div className="w-1 h-5 bg-accent rounded-full"></div>
+                      <div className="mb-4 sm:mb-6">
+                        <h3 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
+                          <div className="w-1 h-4 sm:h-5 bg-accent rounded-full"></div>
                           Especificaciones
                         </h3>
                         
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group">
-                            <div className="flex items-center gap-2 mb-2">
-                              <Calendar className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
-                              <span className="text-xs text-gray-400 font-medium">Año</span>
+                        <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                          <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group">
+                            <div className="flex items-center gap-2 mb-1 sm:mb-2">
+                              <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent group-hover:scale-110 transition-transform" />
+                              <span className="text-[10px] sm:text-xs text-gray-400 font-medium">Año</span>
                             </div>
-                            <p className="text-white font-semibold">{selectedAuto.anio}</p>
+                            <p className="text-sm sm:text-base text-white font-semibold">{selectedAuto.anio}</p>
                           </div>
 
                           {selectedAuto.puertas && (
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group">
-                              <div className="flex items-center gap-2 mb-2">
-                                <DoorClosed className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
-                                <span className="text-xs text-gray-400 font-medium">Puertas</span>
+                            <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group">
+                              <div className="flex items-center gap-2 mb-1 sm:mb-2">
+                                <DoorClosed className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent group-hover:scale-110 transition-transform" />
+                                <span className="text-[10px] sm:text-xs text-gray-400 font-medium">Puertas</span>
                               </div>
-                              <p className="text-white font-semibold">{selectedAuto.puertas}</p>
+                              <p className="text-sm sm:text-base text-white font-semibold">{selectedAuto.puertas}</p>
                             </div>
                           )}
 
-                          <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group">
-                            <div className="flex items-center gap-2 mb-2">
-                              <FuelIcon className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
-                              <span className="text-xs text-gray-400 font-medium">Combustible</span>
+                          <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group">
+                            <div className="flex items-center gap-2 mb-1 sm:mb-2">
+                              <FuelIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent group-hover:scale-110 transition-transform" />
+                              <span className="text-[10px] sm:text-xs text-gray-400 font-medium">Combustible</span>
                             </div>
-                            <p className="text-white font-semibold">{selectedAuto.tipoCombustible}</p>
+                            <p className="text-sm sm:text-base text-white font-semibold">{selectedAuto.tipoCombustible}</p>
                           </div>
 
                           {selectedAuto.transmision && (
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Cog className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
-                                <span className="text-xs text-gray-400 font-medium">Transmisión</span>
+                            <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group">
+                              <div className="flex items-center gap-2 mb-1 sm:mb-2">
+                                <Cog className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent group-hover:scale-110 transition-transform" />
+                                <span className="text-[10px] sm:text-xs text-gray-400 font-medium">Transmisión</span>
                               </div>
-                              <p className="text-white font-semibold">{selectedAuto.transmision}</p>
+                              <p className="text-sm sm:text-base text-white font-semibold">{selectedAuto.transmision}</p>
                             </div>
                           )}
 
                           {selectedAuto.kilometraje !== null && (
-                            <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group col-span-2">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Gauge className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
-                                <span className="text-xs text-gray-400 font-medium">Kilometraje</span>
+                            <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group col-span-2">
+                              <div className="flex items-center gap-2 mb-1 sm:mb-2">
+                                <Gauge className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent group-hover:scale-110 transition-transform" />
+                                <span className="text-[10px] sm:text-xs text-gray-400 font-medium">Kilometraje</span>
                               </div>
-                              <p className="text-white font-semibold">{formatearKilometraje(selectedAuto.kilometraje)}</p>
+                              <p className="text-sm sm:text-base text-white font-semibold">{formatearKilometraje(selectedAuto.kilometraje)}</p>
                             </div>
                           )}
 
-                          <div className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group col-span-2">
+                          <div className="bg-white/5 border border-white/10 rounded-lg p-3 sm:p-4 hover:bg-white/10 hover:border-accent/30 transition-all duration-300 group col-span-2">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <div className={`w-2 h-2 rounded-full ${
@@ -698,23 +851,23 @@ export default function AutosPage() {
 
                       {/* Description */}
                       {selectedAuto.descripcion && (
-                        <div className="mb-6 bg-white/5 border border-white/10 rounded-xl p-5">
-                          <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                            <div className="w-1 h-5 bg-accent rounded-full"></div>
+                        <div className="mb-4 sm:mb-6 bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5">
+                          <h3 className="text-base sm:text-lg font-bold text-white mb-2 sm:mb-3 flex items-center gap-2">
+                            <div className="w-1 h-4 sm:h-5 bg-accent rounded-full"></div>
                             Descripción
                           </h3>
-                          <p className="text-gray-300 leading-relaxed text-sm">
+                          <p className="text-gray-300 leading-relaxed text-xs sm:text-sm">
                             {selectedAuto.descripcion}
                           </p>
                         </div>
                       )}
 
                       {/* Action Buttons */}
-                      <div className="flex gap-3 mt-auto">
-                        <Button className="flex-1 bg-accent hover:bg-accent/90 text-white py-6">
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-auto">
+                        <Button className="flex-1 bg-accent hover:bg-accent/90 text-white py-4 sm:py-6 text-sm sm:text-base">
                           Contactar
                         </Button>
-                        <Button variant="outline" className="flex-1 py-6">
+                        <Button variant="outline" className="flex-1 py-4 sm:py-6 text-sm sm:text-base">
                           Agendar Prueba
                         </Button>
                       </div>

@@ -33,8 +33,8 @@ export function AboutSection() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                {/* Left side - Content */}
                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
                >
@@ -77,11 +77,11 @@ export function AboutSection() {
 
                {/* Right side - Image placeholder */}
                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="relative"
+                  className="relative overflow-hidden"
                >
                   <div className="aspect-square rounded-2xl bg-gradient-to-br from-feller-red/20 to-feller-darkred/20 flex items-center justify-center">
                      <div className="text-center">

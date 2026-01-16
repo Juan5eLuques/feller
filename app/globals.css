@@ -3,11 +3,13 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   width: 100%;
   position: relative;
+  overflow-x: hidden;
 }
 
 @theme {
