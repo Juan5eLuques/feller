@@ -28,9 +28,12 @@ const features = [
 
 export function AboutSection() {
    return (
-      <section id="about" className="py-20 bg-feller-darkgray/50">
+      <section id="about" className="py-12 sm:py-16 lg:py-20 bg-zinc-950/50 relative">
+         {/* Separador superior */}
+         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-feller-red/30 to-transparent"></div>
+         
          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                {/* Left side - Content */}
                <motion.div
                   initial={{ opacity: 0 }}

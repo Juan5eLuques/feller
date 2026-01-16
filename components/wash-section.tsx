@@ -42,19 +42,23 @@ const services = [
 
 export function WashSection() {
    return (
-      <section id="wash" className="py-24 bg-background">
+      <section id="wash" className="py-12 sm:py-16 lg:py-20 bg-black relative">
+         {/* Separador superior */}
+         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-feller-red/30 to-transparent"></div>
+         
          <div className="container mx-auto px-4">
             <motion.div
-               className="text-center mb-16"
+               className="text-center mb-10 sm:mb-12"
                initial={{ opacity: 0, y: 30 }}
                whileInView={{ opacity: 1, y: 0 }}
                viewport={{ once: true }}
                transition={{ duration: 0.6 }}
             >
-               <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-white mb-4">
+               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-white mb-3">
                   Servicio de Lavado Premium
                </h2>
-               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-feller-red to-transparent mx-auto mb-4"></div>
+               <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
                   Cuidamos tu vehículo con la máxima dedicación y productos de primera calidad
                </p>
             </motion.div>
@@ -112,13 +116,13 @@ export function WashSection() {
             </div>
 
             <motion.div
-               className="mt-16 text-center"
+               className="mt-10 sm:mt-12 text-center"
                initial={{ opacity: 0 }}
                whileInView={{ opacity: 1 }}
                viewport={{ once: true }}
                transition={{ duration: 0.6, delay: 0.3 }}
             >
-               <Card className="inline-block p-8 bg-card border-border">
+               <Card className="inline-block p-6 sm:p-8 bg-card border-border">
                   <p className="text-muted-foreground mb-4">¿Necesitas un servicio personalizado?</p>
                   <Button variant="outline">Contactar para Cotización</Button>
                </Card>

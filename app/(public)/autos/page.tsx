@@ -121,7 +121,7 @@ export default function AutosPage() {
       
       {/* Main Content */}
       <section className="pt-24 pb-12 bg-black min-h-screen">
-        <div className="mx-auto px-4 sm:px-6 max-w-[2000px]">
+        <div className="mx-auto px-3 sm:px-4 md:px-6 max-w-[2000px]">
           
           {/* Mobile Filters Panel */}
           <div className="lg:hidden mb-6">
@@ -459,27 +459,29 @@ export default function AutosPage() {
             </AnimatePresence>
 
             {/* Main Content */}
-            <div className="flex-1 bg-zinc-950/30 backdrop-blur-sm border border-zinc-800/30 rounded-2xl lg:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8">
+            <div className="flex-1 lg:bg-zinc-950/30 lg:backdrop-blur-sm lg:border lg:border-zinc-800/30 lg:rounded-3xl lg:shadow-2xl lg:p-8">
               {/* Integrated Header */}
-              <div className="mb-6 lg:mb-8">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 lg:mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-red-600/10 rounded-xl border border-red-600/20">
+              <div className="mb-4 lg:mb-8">
+                <div className="flex items-center justify-between gap-2 mb-3 lg:mb-6">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="p-1.5 sm:p-2 bg-red-600/10 rounded-lg sm:rounded-xl border border-red-600/20">
                       <Car className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
                     </div>
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-                      <span className="text-red-600">Autos</span> <span className="text-white">Disponibles</span>
-                    </h1>
+                    <div>
+                      <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold">
+                        <span className="text-red-600">Autos</span> <span className="text-white">Disponibles</span>
+                      </h1>
+                      <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
+                        {loading ? (
+                          <span>Cargando...</span>
+                        ) : (
+                          <span>
+                            <span className="text-red-600 font-semibold">{filteredAutos.length}</span> {filteredAutos.length === 1 ? 'vehículo encontrado' : 'vehículos encontrados'}
+                          </span>
+                        )}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-400 ml-11 sm:ml-0">
-                    {loading ? (
-                      <span>Cargando...</span>
-                    ) : (
-                      <span>
-                        <span className="text-red-600 font-semibold">{filteredAutos.length}</span> {filteredAutos.length === 1 ? 'vehículo disponible' : 'vehículos disponibles'}
-                      </span>
-                    )}
-                  </p>
                 </div>
                 
                 {!showFilters && (
@@ -519,7 +521,7 @@ export default function AutosPage() {
                   </Button>
                 </motion.div>
               ) : (
-                <div className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 ${
+                <div className={`grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 ${
                   showFilters 
                     ? 'lg:grid-cols-2 xl:grid-cols-3' 
                     : 'lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'

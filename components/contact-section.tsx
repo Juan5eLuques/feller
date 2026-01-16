@@ -32,7 +32,10 @@ export function ContactSection() {
    }
 
    return (
-      <section id="contact" className="py-20 bg-black">
+      <section id="contact" className="py-12 sm:py-16 lg:py-20 bg-black relative">
+         {/* Separador superior */}
+         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-feller-red/30 to-transparent"></div>
+         
          <div className="container mx-auto px-4">
             {/* Header */}
             <motion.div
@@ -40,13 +43,13 @@ export function ContactSection() {
                whileInView={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.6 }}
                viewport={{ once: true }}
-               className="text-center mb-16"
+               className="text-center mb-10 sm:mb-12"
             >
-               <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-white mb-3 tracking-tight">
+               <h2 className="text-3xl sm:text-4xl md:text-5xl font-montserrat font-bold text-white mb-3 tracking-tight">
                   <span className="text-feller-red">Contacto</span>
                </h2>
-               <div className="w-20 h-0.5 bg-linear-to-r from-transparent via-feller-red to-transparent mx-auto mb-5"></div>
-               <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto font-light">
+               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-feller-red to-transparent mx-auto mb-4"></div>
+               <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light">
                   ¿Tienes alguna pregunta? Estamos aquí para ayudarte
                </p>
             </motion.div>
